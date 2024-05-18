@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Interface</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>CRUD Interface</h1>
+    
+    <!-- Form for adding/updating data -->
+    <form id="employeeForm">
+        <input type="hidden" id="empId">
+        <input type="text" id="empName" placeholder="Employee Name" required>
+        <input type="text" id="designation" placeholder="Designation" required>
+        <input type="text" id="location" placeholder="Location" required>
+        <input type="number" id="salary" placeholder="Salary" required>
+        <button type="submit" id="formButton">Add Employee</button>
+    </form>
+
+    <!-- Table to display data -->
+    <table id="employeeTable">
+        <thead>
+            <tr>
+                <th>EmpID</th>
+                <th>EmpName</th>
+                <th>Designation</th>
+                <th>Location</th>
+                <th>Salary</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="employeeList">
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+</html>

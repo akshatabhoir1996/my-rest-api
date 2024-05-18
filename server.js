@@ -1,5 +1,6 @@
 const express = require('express');
 const sql = require('mssql');
+const path = require('path');
 const app = express();
 const bodyParser = require('body-parser');
 const port = 3000;
@@ -9,18 +10,17 @@ app.use(bodyParser.json());
 
 // SQL Server configuration
 const config = {
-    HOST: "localhost",
-  PORT: 1434, // Corrected: PORT should be a number, not a string
-  user: 'sa',
-  password: '123456',
-  server: 'DESKTOP-MIEVJ2U', // Replace 'your_server_ip' with the actual IP address of your MSSQL server
-  database: 'Akshata',
-  dialect: "mssql",
+    user: 'sa',
+    password: '123456',
+    server: 'DESKTOP-MIEVJ2U',
+    database: 'Akshata',
     options: {
-        encrypt: true, // for Azure
-        trustServerCertificate: true // change to true for local dev / self-signed certs
+        encrypt: true,
+        trustServerCertificate: true
     }
 };
+
+
 
 // Connect to the SQL Server database
 sql.connect(config).then(pool => {
@@ -28,8 +28,16 @@ sql.connect(config).then(pool => {
         console.log('Connected to SQL Server');
     }
 
-     // Define a route to insert data into the database
-     app.post('/data', async (req, res) => {
+    // Serve the HTML file
+    app.get('/employees', (req, res) => {
+        res.sendFile(path.join(__dirname, 'index.html'));
+    });
+
+    // Serve static files (JavaScript, CSS)
+    app.use(express.static(path.join(__dirname)));
+
+    // Define a route to insert data into the database
+    app.post('/data', async (req, res) => {
         const { EmpName, Designation, Location, Salary } = req.body;
         if (!EmpName || !Designation || !Location || !Salary) {
             return res.status(400).send({ message: 'All fields are required' });
@@ -46,7 +54,6 @@ sql.connect(config).then(pool => {
             res.status(500).send({ message: err.message });
         }
     });
-
 
     // Define a route to get data from the database
     app.get('/data', async (req, res) => {
